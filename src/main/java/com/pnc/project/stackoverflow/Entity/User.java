@@ -1,19 +1,29 @@
 package com.pnc.project.stackoverflow.Entity;
 
-import java.util.List;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document(collection = "User")
 public class User {
 
+    @Id
+    private String userId;
     private String displayName;
     private String email;
     private String password;
-    private List<Question> questions;
-    private List<Answer> answers;
-    private List<Comment> comments;
 
-    public User(){
+    public User() {
 
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public String getDisplayName() {
         return displayName;
     }
@@ -38,27 +48,13 @@ public class User {
         this.password = password;
     }
 
-    public List<Question> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(List<Question> questions) {
-        this.questions = questions;
-    }
-
-    public List<Answer> getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(List<Answer> answers) {
-        this.answers = answers;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId='" + userId + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
