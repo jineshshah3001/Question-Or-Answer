@@ -24,12 +24,12 @@ public class CommentController {
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
-    @PostMapping("/{id}/addCommentToQuestion")
+        @PostMapping("/{id}/addCommentToQuestion")
     public void addCommentToQuestion(@PathVariable String id , @RequestBody Comment comment){
         Optional<Question> question = questionService.findById(id);
         if(question.isPresent()){
             Question newQuestion = question.get();
-            comment.setId(sequenceGeneratorService.generateSequence(Comment.SEQUENCE_NAME));
+            comment.setId(sequenceGeneratorService.generateSequence(Question.SEQUENCE_NAME));
             if(newQuestion.getComments()!=null){
                 newQuestion.getComments().add(comment);
             }
@@ -54,7 +54,7 @@ public class CommentController {
            Optional<Answer> answer =  answers.stream().filter(A -> A.getId() == answerId).findFirst();
             if(answer.isPresent()){
                 Answer newAnswer = answer.get();
-                comment.setId(sequenceGeneratorService.generateSequence(Comment.SEQUENCE_NAME));
+                comment.setId(sequenceGeneratorService.generateSequence(Question.SEQUENCE_NAME));
                 if(newAnswer.getComments()!=null){
                     newAnswer.getComments().add(comment);
                 }

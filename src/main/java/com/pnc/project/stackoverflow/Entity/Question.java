@@ -2,6 +2,7 @@ package com.pnc.project.stackoverflow.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -20,6 +21,9 @@ public class Question {
     private long numberOfAnswers;
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateAsked;
+
+    @Transient
+    public static final String SEQUENCE_NAME = "sequence";
 
 
     public Date getDateAsked() {

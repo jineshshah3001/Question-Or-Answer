@@ -34,7 +34,7 @@ public class AnswerController {
 
         if(question.isPresent()){
             Question newQuestion = question.get();
-            answer.setId(sequenceGeneratorService.generateSequence(Answer.SEQUENCE_NAME));
+            answer.setId(sequenceGeneratorService.generateSequence(Question.SEQUENCE_NAME));
             if(newQuestion.getAnswers()!=null){
                 newQuestion.getAnswers().add(answer);
                 newQuestion.setNumberOfAnswers(newQuestion.getAnswers().size());

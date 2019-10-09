@@ -1,14 +1,10 @@
 package com.pnc.project.stackoverflow.Entity;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 
 import java.util.List;
 
 public class Answer {
-
-    @Transient
-    public static final String SEQUENCE_NAME = "answer_sequence";
 
 
     @Id

@@ -1,14 +1,8 @@
 package com.pnc.project.stackoverflow.Entity;
 
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
-
-import java.math.BigInteger;
 
 public class Comment {
-
-    @Transient
-    public static final String SEQUENCE_NAME = "comment_sequence";
 
     @Id
     private Long id;
