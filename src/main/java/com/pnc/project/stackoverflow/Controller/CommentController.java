@@ -3,12 +3,9 @@ package com.pnc.project.stackoverflow.Controller;
 import com.pnc.project.stackoverflow.Entity.Answer;
 import com.pnc.project.stackoverflow.Entity.Comment;
 import com.pnc.project.stackoverflow.Entity.Question;
-import com.pnc.project.stackoverflow.Repository.AnswerRepository;
 import com.pnc.project.stackoverflow.Service.QuestionService;
 import com.pnc.project.stackoverflow.Service.SequenceGeneratorService;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,12 +22,6 @@ public class CommentController {
     private QuestionService questionService;
 
     @Autowired
-    private AnswerRepository answerRepository;
-
-    @Autowired
-    MongoTemplate mongoTemplate;
-
-    @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
     @PostMapping("/{id}/addCommentToQuestion")
@@ -39,13 +30,22 @@ public class CommentController {
         if(question.isPresent()){
             Question newQuestion = question.get();
             comment.setId(sequenceGeneratorService.generateSequence(Comment.SEQUENCE_NAME));
-            newQuestion.getComments().add(comment);
+            if(newQuestion.getComments()!=null){
+                newQuestion.getComments().add(comment);
+            }
+            else{
+                List<Comment> comments = new ArrayList<>();
+                comments.add(comment);
+                newQuestion.setComments(comments)   ;
+            }
+
             questionService.postQuestion(newQuestion);
         }
     }
 
     @PostMapping("/{questionId}/{answerId}/addCommentToAnswer")
     public void addCommentToAnswer( @PathVariable String questionId , @PathVariable Long answerId , @RequestBody Comment comment) {
+
         Optional<Question> question = questionService.findById(questionId);
         if(question.isPresent()){
             Question newQuestion = question.get();

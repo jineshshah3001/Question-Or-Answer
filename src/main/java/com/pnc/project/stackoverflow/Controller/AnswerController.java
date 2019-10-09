@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -34,7 +35,17 @@ public class AnswerController {
         if(question.isPresent()){
             Question newQuestion = question.get();
             answer.setId(sequenceGeneratorService.generateSequence(Answer.SEQUENCE_NAME));
-            newQuestion.getAnswers().add(answer);
+            if(newQuestion.getAnswers()!=null){
+                newQuestion.getAnswers().add(answer);
+                newQuestion.setNumberOfAnswers(newQuestion.getAnswers().size());
+            }
+            else{
+                List<Answer> answers = new ArrayList<>();
+                answers.add(answer);
+                newQuestion.setAnswers(answers);
+                newQuestion.setNumberOfAnswers(1);
+            }
+
             questionService.postQuestion(newQuestion);
         }
 

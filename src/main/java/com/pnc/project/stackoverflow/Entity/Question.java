@@ -1,8 +1,10 @@
 package com.pnc.project.stackoverflow.Entity;
 
-import org.bson.types.ObjectId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.Date;
 import java.util.List;
 
 @Document(collection = "Question")
@@ -15,7 +17,26 @@ public class Question {
     private List<String> tag;
     private List<Comment> comments;
     private List<Answer> answers;
+    private long numberOfAnswers;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private Date dateAsked;
 
+
+    public Date getDateAsked() {
+        return dateAsked;
+    }
+
+    public void setDateAsked(Date dateAsked) {
+        this.dateAsked = dateAsked;
+    }
+
+    public long getNumberOfAnswers() {
+        return numberOfAnswers;
+    }
+
+    public void setNumberOfAnswers(long numberOfAnswers) {
+        this.numberOfAnswers = numberOfAnswers;
+    }
 
     public List<Comment> getComments() {
         return comments;

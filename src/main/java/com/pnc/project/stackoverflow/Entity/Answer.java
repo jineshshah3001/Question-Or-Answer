@@ -3,8 +3,6 @@ package com.pnc.project.stackoverflow.Entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 
-import javax.annotation.Generated;
-import java.math.BigInteger;
 import java.util.List;
 
 public class Answer {
@@ -21,6 +19,7 @@ public class Answer {
     public Answer(){
 
     }
+
 
     public Long getId() {
         return id;
