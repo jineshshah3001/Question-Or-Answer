@@ -5,7 +5,6 @@ import com.pnc.project.stackoverflow.Entity.Question;
 import com.pnc.project.stackoverflow.Service.QuestionService;
 import com.pnc.project.stackoverflow.Service.SequenceGeneratorService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,9 +19,6 @@ public class AnswerController {
 
     @Autowired
     private QuestionService questionService;
-
-    @Autowired
-    MongoTemplate mongoTemplate;
 
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;

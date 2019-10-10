@@ -24,6 +24,7 @@ public class CommentController {
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
+
         @PostMapping("/{id}/addCommentToQuestion")
     public void addCommentToQuestion(@PathVariable String id , @RequestBody Comment comment){
         Optional<Question> question = questionService.findById(id);
@@ -43,35 +44,27 @@ public class CommentController {
         }
     }
 
-    @PostMapping("/{questionId}/{answerId}/addCommentToAnswer")
-    public void addCommentToAnswer( @PathVariable String questionId , @PathVariable Long answerId , @RequestBody Comment comment) {
-
-        Optional<Question> question = questionService.findById(questionId);
-        if(question.isPresent()){
-            Question newQuestion = question.get();
-
-            List<Answer> answers = newQuestion.getAnswers();
-           Optional<Answer> answer =  answers.stream().filter(A -> A.getId() == answerId).findFirst();
-            if(answer.isPresent()){
-                Answer newAnswer = answer.get();
-                comment.setId(sequenceGeneratorService.generateSequence(Question.SEQUENCE_NAME));
-                if(newAnswer.getComments()!=null){
-                    newAnswer.getComments().add(comment);
-                }
-                else{
-                    List<Comment> comments = new ArrayList<>();
-                    comments.add(comment);
-                    newAnswer.setComments(comments);
-                }
-                newQuestion.setAnswers(answers);
-                questionService.postQuestion(newQuestion);
+    @PostMapping("/{answerId}/addCommentToAnswer")
+    public void addCommentToAnswer(@PathVariable Long answerId , @RequestBody Comment comment) {
+        Question question = questionService.findQuestionByAnswerId(answerId);
+        List<Answer> answers = question.getAnswers();
+        Optional<Answer> answer = answers.stream().filter(A -> A.getId() == answerId).findFirst();
+        if (answer.isPresent()) {
+            Answer newAnswer = answer.get();
+            comment.setId(sequenceGeneratorService.generateSequence(Question.SEQUENCE_NAME));
+            if (newAnswer.getComments() != null) {
+                newAnswer.getComments().add(comment);
+            } else {
+                List<Comment> comments = new ArrayList<>();
+                comments.add(comment);
+                newAnswer.setComments(comments);
             }
+            question.setAnswers(answers);
+            questionService.postQuestion(question);
         }
 
 
     }
-
-
 
 
 }

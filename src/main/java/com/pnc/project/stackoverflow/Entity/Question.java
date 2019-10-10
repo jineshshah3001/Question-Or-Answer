@@ -21,10 +21,19 @@ public class Question {
     private long numberOfAnswers;
     @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateAsked;
+    private User user;
 
     @Transient
     public static final String SEQUENCE_NAME = "sequence";
 
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Date getDateAsked() {
         return dateAsked;
@@ -88,5 +97,20 @@ public class Question {
 
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", body='" + body + '\'' +
+                ", tag=" + tag +
+                ", comments=" + comments +
+                ", answers=" + answers +
+                ", numberOfAnswers=" + numberOfAnswers +
+                ", dateAsked=" + dateAsked +
+                ", user=" + user +
+                '}';
     }
 }
