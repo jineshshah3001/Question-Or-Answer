@@ -7,10 +7,19 @@ public class Comment {
     @Id
     private Long id;
     private String body;
+    private User user;
 
 
     public Comment(){
 
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Long getId() {

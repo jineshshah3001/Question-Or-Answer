@@ -23,7 +23,6 @@ public class QuestionController {
 
     @GetMapping
     public List<Question> findAll(){
-
         return questionService.findAll();
     }
 
@@ -31,10 +30,10 @@ public class QuestionController {
     public Question postQuestion(@PathVariable String userId ,@RequestBody Question question){
          question.setDateAsked(new Date());
          Optional<User> user = userService.findById(userId);
-         if(user.isPresent()) {
-             User newUser = user.get();
-             question.setUser(newUser);
-         }
+        if(user.isPresent()) {
+            User newUser = user.get();
+            question.setUser(newUser);
+        }
 
          questionService.postQuestion(question);
          return question;

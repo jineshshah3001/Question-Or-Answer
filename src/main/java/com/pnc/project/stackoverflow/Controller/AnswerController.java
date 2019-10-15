@@ -2,8 +2,10 @@ package com.pnc.project.stackoverflow.Controller;
 
 import com.pnc.project.stackoverflow.Entity.Answer;
 import com.pnc.project.stackoverflow.Entity.Question;
+import com.pnc.project.stackoverflow.Entity.User;
 import com.pnc.project.stackoverflow.Service.QuestionService;
 import com.pnc.project.stackoverflow.Service.SequenceGeneratorService;
+import com.pnc.project.stackoverflow.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,14 +25,23 @@ public class AnswerController {
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
-    @PostMapping("/{id}/addAnswer")
-    public void addAnswer(@PathVariable String id , @RequestBody Answer answer){
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/{userId}/{id}/addAnswer")
+    public void addAnswer(@PathVariable String userId , @PathVariable String id , @RequestBody Answer answer){
 
         Optional<Question> question = questionService.findById(id);
+        Optional<User> user = userService.findById(userId);
+        User newUser = null;
+        if(user.isPresent()){
+            newUser = user.get();
+        }
 
         if(question.isPresent()){
             Question newQuestion = question.get();
             answer.setId(sequenceGeneratorService.generateSequence(Question.SEQUENCE_NAME));
+            answer.setUser(newUser);
             if(newQuestion.getAnswers()!=null){
                 newQuestion.getAnswers().add(answer);
                 newQuestion.setNumberOfAnswers(newQuestion.getAnswers().size());

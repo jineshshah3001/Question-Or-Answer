@@ -11,11 +11,20 @@ public class Answer {
     private Long id;
     private String body;
     private List<Comment> comments;
+    private User user;
 
     public Answer(){
 
     }
 
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Long getId() {
         return id;
