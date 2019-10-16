@@ -5,10 +5,12 @@ import com.pnc.project.stackoverflow.Entity.User;
 import com.pnc.project.stackoverflow.Service.QuestionService;
 import com.pnc.project.stackoverflow.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -21,9 +23,19 @@ public class QuestionController {
     @Autowired
     private UserService userService;
 
+//    @GetMapping
+//    public List<Question> findAll(){
+//        return questionService.findAll();
+//    }
+
     @GetMapping
-    public List<Question> findAll(){
-        return questionService.findAll();
+    public ResponseEntity<Page<Question>> getAllQuestions(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize){
+
+
+        Page<Question> allQuestions = questionService.getAllQuestions(pageNo , pageSize);
+        return new ResponseEntity<Page<Question>>(allQuestions, HttpStatus.OK);
     }
 
     @PostMapping("/{userId}")
