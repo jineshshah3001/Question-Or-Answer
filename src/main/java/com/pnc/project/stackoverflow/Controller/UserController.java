@@ -1,8 +1,11 @@
 package com.pnc.project.stackoverflow.Controller;
 
 import com.pnc.project.stackoverflow.Entity.User;
+import com.pnc.project.stackoverflow.Service.JwtUserDetailsService;
 import com.pnc.project.stackoverflow.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -13,11 +16,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private PasswordEncoder bcryptEncoder;
+
+    @Autowired
+    private JwtUserDetailsService userDetailsService;
+
     @PostMapping("stackoverflow/signup")
-    public void addNewUser(@RequestBody User user){
-        String encryptedPassword = userService.get_SHA_512_SecurePassword(user.getPassword(), "salt");
-        user.setPassword(encryptedPassword);
-        userService.addNewUser(user);
+    public ResponseEntity<?> addNewUser(@RequestBody User user){
+        user.setPassword(bcryptEncoder.encode(user.getPassword()));
+        return ResponseEntity.ok(userService.addNewUser(user));
     }
 
 

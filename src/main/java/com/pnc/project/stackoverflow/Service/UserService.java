@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface UserService {
 
-    void addNewUser(User user);
+    User addNewUser(User user);
 
     Optional<User> findById(String id);
 

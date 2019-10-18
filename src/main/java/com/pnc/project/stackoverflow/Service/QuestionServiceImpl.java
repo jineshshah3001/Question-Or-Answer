@@ -44,8 +44,7 @@ public class QuestionServiceImpl implements QuestionService {
     public Page<Question> getAllQuestions(Integer pageNo, Integer pageSize) {
         Pageable paging = PageRequest.of(pageNo,pageSize);
         Page<Question> pageResult = questionRepository.findAll(paging);
-        System.out.println(pageResult.getTotalPages());
-       return pageResult;
+        return pageResult;
 
     }
 }

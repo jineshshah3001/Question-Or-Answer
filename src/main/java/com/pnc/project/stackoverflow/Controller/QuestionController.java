@@ -31,10 +31,11 @@ public class QuestionController {
     @GetMapping
     public ResponseEntity<Page<Question>> getAllQuestions(
             @RequestParam(defaultValue = "0") Integer pageNo,
-            @RequestParam(defaultValue = "10") Integer pageSize){
+            @RequestParam(defaultValue = "3") Integer pageSize){
 
 
         Page<Question> allQuestions = questionService.getAllQuestions(pageNo , pageSize);
+        System.out.println(allQuestions.getTotalPages());
         return new ResponseEntity<Page<Question>>(allQuestions, HttpStatus.OK);
     }
 
