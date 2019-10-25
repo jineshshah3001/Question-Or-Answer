@@ -1,5 +1,6 @@
 package com.pnc.project.stackoverflow.Controller;
 
+import com.pnc.project.stackoverflow.Config.JwtTokenUtil;
 import com.pnc.project.stackoverflow.Entity.Question;
 import com.pnc.project.stackoverflow.Entity.User;
 import com.pnc.project.stackoverflow.Service.QuestionService;
@@ -23,10 +24,8 @@ public class QuestionController {
     @Autowired
     private UserService userService;
 
-//    @GetMapping
-//    public List<Question> findAll(){
-//        return questionService.findAll();
-//    }
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @GetMapping
     public ResponseEntity<Page<Question>> getAllQuestions(
@@ -39,15 +38,13 @@ public class QuestionController {
         return new ResponseEntity<Page<Question>>(allQuestions, HttpStatus.OK);
     }
 
-    @PostMapping("/{userId}")
-    public Question postQuestion(@PathVariable String userId ,@RequestBody Question question){
+    @PostMapping("/submit")
+    public Question postQuestion(@RequestHeader String Authorization , @RequestBody Question question){
          question.setDateAsked(new Date());
-         Optional<User> user = userService.findById(userId);
-        if(user.isPresent()) {
-            User newUser = user.get();
-            question.setUser(newUser);
-        }
-
+         String jwtToken = Authorization.substring(7);
+         String email  = jwtTokenUtil.getUsernameFromToken(jwtToken);
+         User user = userService.findByEmail(email);
+         question.setUser(user);
          questionService.postQuestion(question);
          return question;
     }
