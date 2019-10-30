@@ -1,6 +1,5 @@
 package com.pnc.project.stackoverflow.Entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -19,20 +18,26 @@ public class Question {
     private List<Comment> comments;
     private List<Answer> answers;
     private long numberOfAnswers;
-    @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateAsked;
-    private User user;
-
+    private String askedBy;
+    private String editedBy;
     @Transient
     public static final String SEQUENCE_NAME = "sequence";
 
-
-    public User getUser() {
-        return user;
+    public String getAskedBy() {
+        return askedBy;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAskedBy(String askedBy) {
+        this.askedBy = askedBy;
+    }
+
+    public String getEditedBy() {
+        return editedBy;
+    }
+
+    public void setEditedBy(String editedBy) {
+        this.editedBy = editedBy;
     }
 
     public Date getDateAsked() {
@@ -110,7 +115,7 @@ public class Question {
                 ", answers=" + answers +
                 ", numberOfAnswers=" + numberOfAnswers +
                 ", dateAsked=" + dateAsked +
-                ", user=" + user +
                 '}';
     }
+
 }

@@ -9,7 +9,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionServiceImpl implements QuestionService {
@@ -47,4 +51,35 @@ public class QuestionServiceImpl implements QuestionService {
         return pageResult;
 
     }
+
+    @Override
+    public List<Question> findNewest() {
+       List<Question> questions = (List<Question>) questionRepository.findAll();
+        Collections.sort(questions, new Comparator<Question>() {
+            public int compare(Question q1, Question q2) {
+                return q2.getDateAsked().compareTo(q1.getDateAsked());
+            }
+        });
+        return questions;
+    }
+
+    @Override
+    public List<Question> findOldest() {
+        List<Question> questions = (List<Question>) questionRepository.findAll();
+        Collections.sort(questions, new Comparator<Question>() {
+            public int compare(Question q1, Question q2) {
+                return q1.getDateAsked().compareTo(q2.getDateAsked());
+            }
+        });
+        return questions;
+    }
+
+    @Override
+    public List<Question> findUnanswered() {
+        List<Question> questions = (List<Question>) questionRepository.findAll();
+        List<Question> filtered = questions.stream().filter(q->q.getNumberOfAnswers()==0).collect(Collectors.toList());
+        return filtered;
+    }
+
+
 }

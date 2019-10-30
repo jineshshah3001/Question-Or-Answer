@@ -2,6 +2,7 @@ package com.pnc.project.stackoverflow.Entity;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.Date;
 import java.util.List;
 
 public class Answer {
@@ -11,20 +12,41 @@ public class Answer {
     private Long id;
     private String body;
     private List<Comment> comments;
-    private User user;
+    private Date dateCreated;
+    private String answeredBy;
+    private String editedBy;
+
+
 
     public Answer(){
 
     }
 
-
-    public User getUser() {
-        return user;
+    public String getAnsweredBy() {
+        return answeredBy;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAnsweredBy(String answeredBy) {
+        this.answeredBy = answeredBy;
     }
+
+    public String getEditedBy() {
+        return editedBy;
+    }
+
+    public void setEditedBy(String editedBy) {
+        this.editedBy = editedBy;
+    }
+
+
+    public Date getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(Date dateCreated) {
+        this.dateCreated = dateCreated;
+    }
+
 
     public Long getId() {
         return id;

@@ -12,10 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/stackoverflow")
 public class CommentController {
 
     @Autowired
@@ -30,18 +32,18 @@ public class CommentController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
 
-    @PostMapping("/{questionId}/addCommentToQuestion")
+    @PostMapping("questions/{questionId}/comment/submit")
     public void addCommentToQuestion(@RequestHeader String Authorization ,@PathVariable String questionId , @RequestBody Comment comment){
         Optional<Question> question = questionService.findById(questionId);
 
         String jwtToken = Authorization.substring(7);
         String email  = jwtTokenUtil.getUsernameFromToken(jwtToken);
         User user = userService.findByEmail(email);
-
+        comment.setDateCreated(new Date(System.currentTimeMillis()));
         if(question.isPresent()){
             Question newQuestion = question.get();
             comment.setId(sequenceGeneratorService.generateSequence(Question.SEQUENCE_NAME));
-            comment.setUser(user);
+            comment.setCommentedBy(user.getDisplayName());
             if(newQuestion.getComments()!=null){
                 newQuestion.getComments().add(comment);
             }
@@ -55,19 +57,19 @@ public class CommentController {
         }
     }
 
-    @PostMapping("/{answerId}/addCommentToAnswer")
+    @PostMapping("answers/{answerId}/comment/submit")
         public void addCommentToAnswer(@RequestHeader String Authorization ,@PathVariable Long answerId , @RequestBody Comment comment) {
             Question question = questionService.findQuestionByAnswerId(answerId);
         String jwtToken = Authorization.substring(7);
         String email  = jwtTokenUtil.getUsernameFromToken(jwtToken);
         User user = userService.findByEmail(email);
-
+        comment.setDateCreated(new Date(System.currentTimeMillis()));
 
             List<Answer> answers = question.getAnswers();
             Optional<Answer> answer = answers.stream().filter(A -> A.getId() == answerId).findFirst();
             if (answer.isPresent()) {
                 Answer newAnswer = answer.get();
-                comment.setUser(user);
+                comment.setCommentedBy(user.getDisplayName());
                 comment.setId(sequenceGeneratorService.generateSequence(Question.SEQUENCE_NAME));
                 if (newAnswer.getComments() != null) {
                     newAnswer.getComments().add(comment);

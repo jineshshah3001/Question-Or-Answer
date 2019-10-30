@@ -10,4 +10,5 @@ public interface QuestionRepository extends PagingAndSortingRepository<Question,
     @Query("{'answers.id' : ?0}")
     Question findQuestionByAnswerId(Long id);
 
+
 }
